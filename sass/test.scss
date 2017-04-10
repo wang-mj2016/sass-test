@@ -1,0 +1,155 @@
+//sass声明变量
+//用$声明
+$color:red;
+$color2:blue;
+//普通变量与默认变量
+//普通变量可以全局使用
+//默认变量仅需要在值后面加上！default即可。如：$color:red !default;
+//全局变量和局部变量
+.test{
+    color:$color;
+}
+//嵌套：选择器嵌套、属性嵌套、伪类嵌套
+//选择器嵌套
+.test{
+    h2{
+        color:$color2;
+    }
+}
+//属性嵌套
+// .box{
+//     border-top: 1px solid red;
+// }
+.box{
+    border:{
+        top: 1px solid red;
+        bottom:1px solid green;
+    }
+}
+//伪类嵌套，需要借助'&'符号一起配合使用
+.clearfix{
+    &:before,
+    &:after{
+        content:"";
+        display:table;
+    }
+    &:after{
+        clear: both;
+        overflow:hidden;
+    }
+}
+//混合宏
+//使用@mixin来声明一个混合宏，如：
+@mixin border-radius{
+    -webkit-border-radius:5px;
+    border-radius: 5px;
+}
+//使用@include来调用混合宏，如：
+button{
+    @include border-radius;
+}
+//传一个不带值的参数
+@mixin border-radius($radius){
+    -webkit-border-radius: $radius;
+    border-radius: $radius;
+}
+.box{
+    @include border-radius(3px);
+}
+//传一个带值的参数
+@mixin border-radius($radius:3px){
+    -webkit-border-radius: $radius;
+    border-radius: $radius;
+}
+.box{
+    @include border-radius;
+}
+// 也可以随机给混合宏传值
+.box{
+    @include border-radius(5px);
+}
+.box{
+    @include border-radius(50%);
+}
+//传多个参数
+@mixin center($width,$height){
+    width: $width;
+    height: $height;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    margin-top: -($height) / 2;
+    margin-left: -($width) / 2;
+}
+.box-center {
+    @include center(500px,300px);
+}
+//有个特别的参数"..."。当混合宏传的参数过多之时，可以使用参数来替代
+@mixin box-shadow($shadows...){
+  @if length($shadows) >= 1 {
+    -webkit-box-shadow: $shadows;
+    box-shadow: $shadows;
+  } @else {
+    $shadows: 0 0 2px rgba(#000,.25);
+    -webkit-box-shadow: $shadow;
+    box-shadow: $shadow;
+  }
+}
+.box {
+  @include box-shadow(0 0 1px rgba(#000,.5),0 0 2px rgba(#000,.2));
+}
+//扩展/继承
+//用@extend来继承已存在的类样式块，从而实现代码的继承
+.btn {
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background-color: #f36;
+  color: #fff;
+  @extend .btn;
+}
+
+.btn-second {
+  background-color: orange;
+  color: #fff;
+  @extend .btn;
+}
+//占位符：%placeholder
+//%placeholder声明的代码，如果不被@extend调用的话，不会产生任何代码
+%mt5 {
+  margin-top: 5px;
+}
+%pt5{
+  padding-top: 5px;
+}
+.btn {
+  @extend %mt5;
+  @extend %pt5;
+}
+
+.block {
+  @extend %mt5;
+
+  span {
+    @extend %pt5;
+  }
+}
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
